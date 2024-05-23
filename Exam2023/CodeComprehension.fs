@@ -35,6 +35,7 @@ module CodeComprehension
                 List.splitAt idx xs |> snd |>Some
         
 
+    // I hate this
     // returns the part of xs that is not in ys
     let rec bar (xs: char list) (ys: char list) : char list =
         match foo2 xs ys with
