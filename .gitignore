@@ -1,0 +1,10 @@
+*.pdb
+*.deps.json
+*config.json
+*.info
+*.nuget.g*
+*/obj
+*/bin
+.idea/*
+*.dll
+*.cache
