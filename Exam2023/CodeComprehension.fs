@@ -1,6 +1,5 @@
 module CodeComprehension
 
-    open System.Collections.Generic
 
     // Checks if ys is a substring of xs
     // xs = hej med dig

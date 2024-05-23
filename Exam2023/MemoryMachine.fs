@@ -29,8 +29,6 @@ module MemoryMachine
     and evalProg m prog =
         (m, prog) ||> List.fold evalStmnt
     
-        
-        
     let lookup2 i : StateMonad<int> =
         SM(fun s ->
             if i < 0 || i >= Array.length s then
@@ -41,8 +39,6 @@ module MemoryMachine
         lookup2 i >>= fun _ ->
             SM(fun s -> Some((), assign s i v))
         
-   
-    
     let binop f sm1 sm2 =
         sm1 >>= fun i1 ->
         sm2 >>= fun i2 ->

@@ -10,6 +10,7 @@
         <Compile Include="MemoryMachine.fs" />
         <Compile Include="CollatzConjecture.fs" />
         <Compile Include="CodeComprehension.fs" />
+        <Compile Include="LogicScaffold.fs" />
         <Compile Include="Logic.fs" />
         <Compile Include="Program.fs"/>
     </ItemGroup>

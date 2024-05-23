@@ -1,6 +1,5 @@
 module CollatzConjecture
 
-    open System
     open Microsoft.FSharp.Collections
     
     let collatz =
