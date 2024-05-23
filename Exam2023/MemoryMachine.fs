@@ -1,10 +1,6 @@
 module MemoryMachine
     open MMScaffold
     
-    let (.+.) e1 e2 = Plus(e1, e2)
-    let (.-.) e1 e2 = Minus(e1, e2)
-    let (.<-.) e1 e2 = Assign (e1, e2)
-    
     let emptyMem x : mem =
         Array.zeroCreate x
         

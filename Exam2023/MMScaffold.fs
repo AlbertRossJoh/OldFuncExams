@@ -9,6 +9,11 @@ module MMScaffold
     | While  of expr * prog
     and prog = stmnt list
     type mem = int array
+    
+    let (.+.) e1 e2 = Plus(e1, e2)
+    let (.-.) e1 e2 = Minus(e1, e2)
+    let (.<-.) e1 e2 = Assign (e1, e2)
+
          
     type StateMonad<'a> = SM of (mem -> ('a * mem) option)
     let ret x = SM(fun s -> Some(x, s))
