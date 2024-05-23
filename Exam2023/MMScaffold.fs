@@ -13,7 +13,19 @@ module MMScaffold
     let (.+.) e1 e2 = Plus(e1, e2)
     let (.-.) e1 e2 = Minus(e1, e2)
     let (.<-.) e1 e2 = Assign (e1, e2)
-
+    
+    let fibProg x =
+        [
+            Num 0 .<-. Num x
+            Num 1 .<-. Num 1
+            Num 2 .<-. Num 0
+            While(Lookup (Num 0),[
+                Num 0 .<-. Lookup (Num 0) .-. Num 1
+                Num 3 .<-. Lookup (Num 1)
+                Num 1 .<-. Lookup (Num 1) .+. Lookup (Num 2)
+                Num 2 .<-. Lookup (Num 3)
+            ])
+        ]
          
     type StateMonad<'a> = SM of (mem -> ('a * mem) option)
     let ret x = SM(fun s -> Some(x, s))

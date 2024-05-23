@@ -28,18 +28,7 @@ module MemoryMachine
                 evalProg m (stmnts@[While(expr, stmnts)])
     and evalProg m prog =
         (m, prog) ||> List.fold evalStmnt
-    let fibProg x =
-        [
-            Num 0 .<-. Num x
-            Num 1 .<-. Num 1
-            Num 2 .<-. Num 0
-            While(Lookup (Num 0),[
-                Num 0 .<-. Lookup (Num 0) .-. Num 1
-                Num 3 .<-. Lookup (Num 1)
-                Num 1 .<-. Lookup (Num 1) .+. Lookup (Num 2)
-                Num 2 .<-. Lookup (Num 3)
-            ])
-        ]
+    
         
         
     let lookup2 i : StateMonad<int> =
