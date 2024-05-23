@@ -86,16 +86,13 @@ module MemoryMachine
             evalStmnt2 x >>>= evalProg2 xs
     
     open FParsec
-    
-    type Parser<'a> = Parser<'a, unit>
-    type ParserResult<'a> = ParserResult<'a, unit>
+   
     let curry f = fun (a, b) -> f a b
     let binop2 pOp p1 p2 = p1 .>> pOp .>>. p2
     let parenthesise p = pchar '[' >>. p .>> pchar ']'
-    let choice ps = choice (Seq.map attempt ps)
-    let createParserForwardedToRef () : Parser<'a> * Parser<'a> ref = createParserForwardedToRef ()
-    let ParseExpr, eref = createParserForwardedToRef<expr>()
-    let ParseAtom, aref = createParserForwardedToRef<expr>()
+   
+    let ParseExpr, eref = MMScaffold.createParserForwardedToRef<expr>()
+    let ParseAtom, aref = MMScaffold.createParserForwardedToRef<expr>()
     
     let parseExpr =
         choice [

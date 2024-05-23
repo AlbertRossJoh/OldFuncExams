@@ -32,4 +32,10 @@ module MMScaffold
         member this.Combine(a, b) = a >>= (fun _ -> b)
     
     let state = StateBuilder()
+    open FParsec
+         
+    type Parser<'a> = Parser<'a, unit>
+    type ParserResult<'a> = ParserResult<'a, unit>   
+    let choice ps = choice (Seq.map attempt ps)
+    let createParserForwardedToRef () : Parser<'a> * Parser<'a> ref = createParserForwardedToRef ()
         
