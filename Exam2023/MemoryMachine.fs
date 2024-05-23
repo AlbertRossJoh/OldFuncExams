@@ -1,17 +1,6 @@
 module MemoryMachine
-
-    open System.Linq
-
-    type expr =
-    | Num    of int
-    | Lookup of expr
-    | Plus   of expr * expr
-    | Minus  of expr * expr
-    type stmnt =
-    | Assign of expr * expr
-    | While  of expr * prog
-    and prog = stmnt list
-    type mem = int array
+    open MMScaffold
+    
     let (.+.) e1 e2 = Plus(e1, e2)
     let (.-.) e1 e2 = Minus(e1, e2)
     let (.<-.) e1 e2 = Assign (e1, e2)
@@ -57,22 +46,6 @@ module MemoryMachine
         ]
         
         
-        
-    type StateMonad<'a> = SM of (mem -> ('a * mem) option)
-    let ret x = SM(fun s -> Some(x, s))
-    let fail = SM(fun _ -> None)
-    let bind f (SM(a)) =
-        SM(fun s ->
-            match a s with
-            | Some(x, s') ->
-                let (SM(g)) = f x
-                g s'
-            | None -> None)
-    
-    let (>>=) x f = bind f x
-    let (>>>=) x y = x >>= (fun _ -> y)
-    let evalSM m (SM f) = f m
-    
     let lookup2 i : StateMonad<int> =
         SM(fun s ->
             if i < 0 || i >= Array.length s then
@@ -83,14 +56,7 @@ module MemoryMachine
         lookup2 i >>= fun _ ->
             SM(fun s -> Some((), assign s i v))
         
-    type StateBuilder() =
-        member this.Bind(f, x) = bind x f
-        member this.Return(x) = ret x
-        member this.ReturnFrom(x) = x
-        member this.Combine(a, b) = a >>= (fun _ -> b)
-    
-    let state = StateBuilder()
-    
+   
     
     let binop f sm1 sm2 =
         sm1 >>= fun i1 ->
