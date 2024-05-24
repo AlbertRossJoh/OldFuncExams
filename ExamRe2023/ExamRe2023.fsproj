@@ -6,7 +6,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Program.fs"/>
+        <Compile Include="JParsec.fsi" />
+        <Compile Include="JParsec.fs" />
+        <Compile Include="ExamScaffold.fs" />
+        <Compile Include="Exam.fs" />
+        <Compile Include="Program.fs" />
+        <None Include="ExamInteractive.fsx" />
     </ItemGroup>
 
 </Project>
