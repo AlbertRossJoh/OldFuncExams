@@ -29,7 +29,7 @@ let testQ1 () =
 
 let testQ2 () =
     printfn "Testing Question 2"
-    // place debug prints for Q2 here
+    printfn "%A" (getEvenAndUneven [1..10])
     ()
 
 let testQ3 () =

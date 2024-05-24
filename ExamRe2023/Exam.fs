@@ -78,26 +78,26 @@
     
 (* 2: Code Comprehension *)
  
-    let rec foo =
+    let rec isEven =
         function
         | 0            -> true
-        | x when x > 0 -> bar (x - 1)
-        | x            -> bar (x + 1)
+        | x when x > 0 -> isUnEven (x - 1)
+        | x            -> isUnEven (x + 1)
         
-    and bar =
+    and isUnEven =
         function
         | 0            -> false
-        | x when x > 0 -> foo (x - 1)
-        | x            -> foo (x + 1)
+        | x when x > 0 -> isEven (x - 1)
+        | x            -> isEven (x + 1)
         
-    let rec baz =
+    let rec getEvenAndUneven =
         function
         | []                 -> [], []
-        | x :: xs when foo x ->
-            let ys, zs = baz xs
+        | x :: xs when isEven x ->
+            let ys, zs = getEvenAndUneven xs
             (x::ys, zs)
         | x :: xs ->
-            let ys, zs = baz xs
+            let ys, zs = getEvenAndUneven xs
             (ys, x::zs)
         
 
@@ -107,19 +107,27 @@
     
     Q: What are the types of functions foo, bar, and baz?
 
-    A: <Your answer goes here>
+    A: 
+    foo : int -> bool
+    bar : int -> bool
+    baz : int list ->  int list * int list
 
 
     Q: What do the function foo, bar, and baz do.
        Focus on what they do rather than how they do it.
 
-    A: <Your answer goes here>
+    A: 
+    foo checks if a number is even
+    bar checks if a number is uneven
+    baz splits an array of ints into even and uneven
     
     Q: What would be appropriate names for functions 
+    
+    A:
        foo, bar, and baz?
-
-    A: <Your answer goes here>
-        
+       foo : isEven
+       bar : isUneven
+       baz : getEvenAndUneven
     *)
         
 
@@ -137,19 +145,24 @@
        what are the types of snippets A, B, and C, expressed using the F# syntax for types, and what are they -- 
        focus on what they do rather than how they do it.
     
-    A: <Your answer goes here>
+    A: baz xs = int list * int list
+        int list split into even and uneven
+    B: bar x = bool 
+        is uneven
+    C: (ys, x::zs) = int list * int list
+        (even ints, uneven ints)
     
     Q: * Explain the use of the `and`-operator that connect the `foo` and the `bar` functions.
        * Argue if the program would work if you replaced `and` with `let rec`.
 
-    A: <Your answer goes here>
-
+    A:  No it would not work as the and keyword is used for mutual recursion.
+        If we were to use `let rec` we would need to define one or the other.
     *)
 
 (* Question 2.3: No recursion *) 
 
-    let foo2 _ = failwith "not implemented"
-    let bar2 _ = failwith "not implemented"
+    let foo2 a = a % 2 = 0
+    let bar2 a = a % 2 <> 0
 
 (* Question 2.4: Tail Recursion *)
 
@@ -165,7 +178,7 @@
        You do not have to step through the foo- or the bar-functions. You are allowed to evaluate 
        those function immediately.
 
-    A: <Your answer goes here>
+    A: the last call of the function is not to baz it is either x::ys or x::zs
     
     *)
 (* Question 2.5: Continuations *)
