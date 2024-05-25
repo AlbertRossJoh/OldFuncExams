@@ -28,14 +28,19 @@ let testQ1 () =
     
 
 let testQ2 () =
-    printfn "Testing Question 2"
-    printfn "%A" (getEvenAndUneven [1..10])
-    printfn "%A" (bazTail [1..10])
+    // printfn "Testing Question 2"
+    // printfn "%A" (getEvenAndUneven [1..10])
+    // printfn "%A" (bazTail [1..10])
     ()
 
 let testQ3 () =
     printfn "Testing Question 3"
-    // place debug prints for Q3 here
+    // printfn "%A" (balanced "()")
+    // printfn "%A" (balanced "(){([])}")
+    // printfn "%A" (balanced "(){([])}(")
+    // printfn "%A" (balanced ")(){([])}(")
+    printfn "%A" (balanced2 (Map.ofList ['a', 'b'; 'b', 'c']) "abcb")
+    printfn "%A" (balanced2 (Map.ofList ['a', 'b'; 'b', 'c']) "abacb")
     ()
 
 let testQ4 () =

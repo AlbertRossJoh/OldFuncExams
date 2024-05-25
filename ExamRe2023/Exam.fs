@@ -210,11 +210,56 @@
     
 (* Question 3.1: Balanced brackets *)
     
-    let balanced _ = failwith "not implemented"
+    let other c =
+        match c with
+        | '(' -> ')'
+        | '[' -> ']'
+        | '{' -> '}'
+        // | ')' -> '('
+        // | ']' -> '['
+        // | '}' -> '{'
+        | _ -> '#'
+        
+    let balanced str =
+        let rec inner stack rest =
+            match rest with
+            | [] -> List.isEmpty stack
+            | x::xs ->
+                matchWithStack stack xs x
+        and matchWithStack stack rest  x =
+            match stack with
+            | [] -> inner (x::stack) rest
+            | y::ys ->
+                if other y = x then
+                    inner ys rest
+                else
+                    inner (x::y::ys) rest
+        inner [] (explode str)
+                
         
 (* Question 3.2: Arbitrary delimiters *)
     
-    let balanced2 _ = failwith "not implemented"
+    let balanced2 dict str =
+        let tryFindOther c =
+            Map.tryFind c dict
+        let rec inner stack rest =
+            match rest with
+            | [] -> List.isEmpty stack
+            | nextChar::xs ->
+                matchWithStack stack xs nextChar
+        and matchWithStack stack rest nextChar =
+            match stack with
+            | [] -> inner (nextChar::stack) rest
+            | previousChar::ys ->
+                match tryFindOther previousChar, tryFindOther nextChar with
+                | Some _, Some _ ->
+                        inner (nextChar::previousChar::ys) rest || inner ys rest
+                | Some(prevOther), None when prevOther = nextChar->
+                        inner ys rest
+                | _ -> inner (nextChar::previousChar::ys) rest
+                    
+        inner [] (explode str)
+        
     
 (* Question 3.3: Matching brackets and palindromes *)    
     
