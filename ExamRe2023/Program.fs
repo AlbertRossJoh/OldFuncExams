@@ -84,7 +84,12 @@ let testQ4 () =
     let smallProg = [(10u, Let("x", Num 42)); (20u, End)] |> mkBasicProgram
     // printfn "%A" (evalProg smallProg)
     // printfn "%A" (evalProg fp)
-    // printfn "%A" (fp |> evalProg |> lookup "result")
+    // printfn "%A" (fp |>bp evalProg |> lookup "result")
+    // printfn "%A" (goto2 50u |> evalSM fp)
+    // printfn "%A" (goto2 50u >>>= getCurrentStmnt2 |> evalSM fp)
+    // printfn "%A" (update2 "x" 42 |> evalSM fp)
+    // printfn "%A" (update2 "x" 42 >>>= lookup2 "x" |> evalSM fp)
+    // printfn "%A" (goto2 50u >>>= step2 |> evalSM fp)
     ()
 
 

@@ -471,15 +471,20 @@
       
     let evalSM p (SM f) = f p (emptyState p)
 
-    let goto2 _ = failwith "not implemented"
+    let goto2 l =
+        SM(fun _ st -> (),goto l st)
     
-    let getCurrentStmnt2 _ = failwith "not implemented"
+    let getCurrentStmnt2 =
+        SM(fun bp st -> getCurrentStmnt bp st, st)
     
     
-    let lookup2 _ = failwith "not implemented"
-    let update2 _ = failwith "not implemented"
+    let lookup2 var =
+        SM(fun _ st -> lookup var st, st)
+    let update2 v a =
+        SM(fun _ st -> (), update v a st)
     
-    let step2 _ = failwith "not implemented"
+    let step2 =
+        SM(fun bp st -> (), step bp st)
 
 (* Question 4.5: State monad evaluation *)
 
