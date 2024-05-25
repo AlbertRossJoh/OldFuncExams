@@ -1,5 +1,6 @@
 ﻿open System
 open ReExam2023
+open JParsec.TextParser
 
 let testQ1 () =
     (* Testsfor Q1.1 *)
@@ -51,6 +52,9 @@ let testQ3 () =
     // printfn "%A" (symmetric "aabbaa")
     // printfn "%A" (symmetric "Dromedaren Alpotto planerade mord!!!")
     // printfn "%A" (symmetric "Dromedaren Alpotto skadar ingen")
+    // printfn "%A" (run parseBalanced "{([]())}{}**END**")
+    // printfn "%A" (run parseBalanced "{([]())[]}{}**END**")
+    // printfn "%A" (run parseBalanced ")(){([])}(**END**")
     ()
 
 let testQ4 () =

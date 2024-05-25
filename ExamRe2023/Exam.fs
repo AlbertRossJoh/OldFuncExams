@@ -303,15 +303,22 @@
                
     open JParsec.TextParser
     
-        
+    let parenthesiseBracket p =  pchar '[' >>. p .>> pchar ']'
+    let parenthesiseReg p = pchar '(' >>. p .>> pchar ')'
+    let parenthesiseTuborg p = pchar '{' >>. p .>> pchar '}'
     let ParseBalanced, bref = createParserForwardedToRef<unit>()
     
-    let parseBalancedAux = pstring "Your parser goes here"
+    let parseBalancedAux =
+        many (choice [
+            between (pchar '[') (pchar ']') ParseBalanced |>> (fun _ -> ())
+            between (pchar '{') (pchar '}') ParseBalanced |>> (fun _ -> ())
+            between (pchar '(') (pchar ')') ParseBalanced |>> (fun _ -> ())
+        ]) |>> (fun _ -> ())
         
     // uncomment after you have done parseBalancedAUX
     
-    // let parseBalanced = parseBalancedAux .>> pstring "**END**"
-    // do bref := parseBalancedAux
+    let parseBalanced = parseBalancedAux .>> pstring "**END**"
+    do bref := parseBalancedAux
             
 (* Question 3.5: Parallel counting *)
 
