@@ -55,12 +55,12 @@ let testQ3 () =
     // printfn "%A" (run parseBalanced "{([]())}{}**END**")
     // printfn "%A" (run parseBalanced "{([]())[]}{}**END**")
     // printfn "%A" (run parseBalanced ")(){([])}(**END**")
-    let lst = [for i in 1..10000 do
-                   yield! ["()"; "({})"; "()({[]})"; "("; "{{}"; "{(})"]]
-    printfn "%A" (countBalanced lst 1)
-    printfn "%A" (countBalanced lst 10)
-    printfn "%A" (countBalanced lst 100)
-    printfn "%A" (countBalanced lst 1000)
+    // let lst = [for i in 1..10000 do
+    //                yield! ["()"; "({})"; "()({[]})"; "("; "{{}"; "{(})"]]
+    // printfn "%A" (countBalanced lst 1)
+    // printfn "%A" (countBalanced lst 10)
+    // printfn "%A" (countBalanced lst 100)
+    // printfn "%A" (countBalanced lst 1000)
     ()
 
 let testQ4 () =

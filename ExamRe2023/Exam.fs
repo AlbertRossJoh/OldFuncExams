@@ -379,12 +379,16 @@
 
     type basicProgram = Map<uint32, stmnt>
     
-    let mkBasicProgram _ = failwith "not implemented"
-    let getStmnt _ = failwith "not implemented"
+    let mkBasicProgram (prog: prog) : basicProgram=
+        Map.ofList prog
+    let getStmnt (l: uint32) (bp: basicProgram) =
+        Map.find l bp
     
-    let nextLine _ = failwith "not implemented"
+    let nextLine (l: uint32) (bp: basicProgram) =
+        Map.tryFindKey (fun k _ -> k > l) bp |> Option.get
     
-    let firstLine _ = failwith "not implemented"
+    let firstLine (bp: basicProgram) : uint32 =
+        Map.minKeyValue bp |> fst
     
 (* Question 4.2: State *)
 
