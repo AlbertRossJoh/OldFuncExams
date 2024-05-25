@@ -1,5 +1,7 @@
 ﻿module ReExam2023
 
+    open System
+
 (* If you are importing this into F# interactive then comment out
    the line above and remove the comment for the line bellow.
 
@@ -263,9 +265,39 @@
     
 (* Question 3.3: Matching brackets and palindromes *)    
     
-    let balanced3 _ = failwith "not implemented" 
+    let balanced3 str =
+        ([], explode str) ||> List.fold (fun stack next ->
+                match stack with
+                | [] -> next::stack
+                | x::xs when other x = next -> xs
+                | stack -> next::stack
+        ) |> List.isEmpty
+        
     
-    let symmetric _ = failwith "not implemented"
+    let removeLast lst =
+        match lst with
+        | [] -> []
+        | _ -> List.removeAt (List.length lst - 1) lst
+        
+    let symmetric str =
+        let a = str
+                |> explode
+                |> List.filter Char.IsLetter
+                |> List.map Char.ToLower
+                |> List.splitInto 2
+            
+        if List.length a = 0 || List.length a = 1 then
+            true
+        else
+            let a, b = (a[0], a[1])
+            let len = List.length
+            let a, b = 
+                if len a <> len b then
+                    (removeLast a, b)
+                else
+                    (a, b)
+            (true, a, List.rev b) |||> List.fold2 (fun isEqual a b ->
+                    isEqual && a = b)
         
 (* Question 3.4: Parsing balanced brackets *)    
                

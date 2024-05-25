@@ -35,12 +35,22 @@ let testQ2 () =
 
 let testQ3 () =
     printfn "Testing Question 3"
-    // printfn "%A" (balanced "()")
-    // printfn "%A" (balanced "(){([])}")
-    // printfn "%A" (balanced "(){([])}(")
-    // printfn "%A" (balanced ")(){([])}(")
-    printfn "%A" (balanced2 (Map.ofList ['a', 'b'; 'b', 'c']) "abcb")
-    printfn "%A" (balanced2 (Map.ofList ['a', 'b'; 'b', 'c']) "abacb")
+    // printfn "balanced: %A" (balanced "()")
+    // printfn "balanced: %A" (balanced "(){([])}")
+    // printfn "balanced: %A" (balanced "(){([])}(")
+    // printfn "balanced: %A" (balanced ")(){([])}(")
+    // printfn "%A" (balanced2 (Map.ofList ['a', 'b'; 'b', 'c']) "abcb")
+    // printfn "%A" (balanced2 (Map.ofList ['a', 'b'; 'b', 'c']) "abacb")
+    // printfn "balanced3: %A" (balanced3 "()")
+    // printfn "balanced3: %A" (balanced3 "(){([])}")
+    // printfn "balanced3: %A" (balanced3 "(){([])}(")
+    // printfn "balanced3: %A" (balanced3 ")(){([])}(")
+    // printfn "%A" (symmetric "")
+    // printfn "%A" (symmetric "s")
+    // printfn "%A" (symmetric "csc")
+    // printfn "%A" (symmetric "aabbaa")
+    // printfn "%A" (symmetric "Dromedaren Alpotto planerade mord!!!")
+    // printfn "%A" (symmetric "Dromedaren Alpotto skadar ingen")
     ()
 
 let testQ4 () =
