@@ -65,7 +65,17 @@ let testQ3 () =
 
 let testQ4 () =
     printfn "Testing Question 4"
-    // place debug prints for Q4 here
+    // printfn "%A" (mkBasicProgram [10u, End])
+    let fp = 10 |> fibProg |> mkBasicProgram
+    // printfn "%A" (getStmnt 50u fp)
+    // printfn "%A" (nextLine 50u fp)
+    // printfn "%A" (firstLine fp)
+    printfn "%A" (emptyState fp)
+    printfn "%A" (emptyState fp |> goto 50u)
+    printfn "%A" (emptyState fp |> getCurrentStmnt fp)
+    printfn "%A" (emptyState fp |> goto 50u |> getCurrentStmnt fp)
+    printfn "%A" (emptyState fp |> update "x" 42)
+    printfn "%A" (emptyState fp |> update "x" 42 |> lookup "x")
     ()
 
 

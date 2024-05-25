@@ -392,18 +392,34 @@
     
 (* Question 4.2: State *)
 
-    type state = unit // Replace by your type type goes here
+    type state = {
+        lineNumber: uint32
+        state: Map<string, int>
+    }
     
-    let emptyState _ = failwith "not implemented"
+    let getLineNumber (st: state) =
+        st.lineNumber
+    
+    let getState (st: state) =
+        st.state
+    let emptyState bp =
+        {
+            lineNumber = firstLine bp
+            state = Map.empty 
+        }
     
     
-    let goto _ = failwith "not implemented"
+    let goto l st =
+       { st with lineNumber = l }
 
-    let getCurrentStmnt _ = failwith "not implemented"
+    let getCurrentStmnt bp st =
+        getStmnt (getLineNumber st) bp
     
-    let update _ = failwith "not implemented"
+    let update v a st =
+        { st with state = Map.add v a (getState st) }
     
-    let lookup _ = failwith "not implemented"
+    let lookup v st =
+        st |> getState |> Map.find v
     
     
 (* Question 4.3: Evaluation *)
