@@ -36,21 +36,44 @@
             Square 0uy)
     
 (* Question 1.1 *)
-    let countWhite _ = failwith "not implemented"
+    let rec countWhite img =
+        match img with
+        | Square(c) -> if c = 255uy then 1 else 0
+        | Quad(a, b, c, d) ->
+            countWhite a +
+            countWhite b +
+            countWhite c +
+            countWhite d
     
 (* Question 1.2 *)
-    let rotateRight _ = failwith "not implemented"
+    let rec rotateRight img =
+        match img with
+        | Quad(a, b, c, d) -> Quad(rotateRight d, rotateRight a, rotateRight b, rotateRight c)
+        | c -> c
 
 (* Question 1.3 *)
-    let map _ = failwith "not implemented"
+    let rec map f img =
+        match img with
+        | Quad(a, b, c, d) -> Quad(map f a, map f b, map f c, map f d)
+        | Square c -> f c
+
     
-    let bitmap _ = failwith "not implemented"
+    let bitmap img =
+        map (fun x -> if x <= 127uy then Square 0uy else Square 255uy) img
 
 (* Question 1.4 *)
 
-    let fold _ = failwith "not implemented"
+    let rec fold f acc img =
+        match img with
+        | Quad(a, b, c, d) ->
+            let one = fold f acc a
+            let two = fold f one b
+            let three = fold f two c
+            fold f three d
+        | Square c -> f acc c
     
-    let countWhite2 _ = failwith "not implemented"
+    let countWhite2 img =
+        fold (fun acc x -> if x = 255uy then acc+1 else acc) 0 img
 
 (* 2: Code Comprehension *)
     let rec foo =
@@ -70,23 +93,25 @@
     
     Q: What are the types of functions foo and bar?
 
-    A: <Your answer goes here>
+    A: foo : int -> string
+       bar : int list -> string list
 
 
     Q: What does the function bar do.
        Focus on what it does rather than how it does it.
 
-    A: <Your answer goes here>
+    A: It converts list of integers to a string list of their binary representation
     
     Q: What would be appropriate names for functions 
        foo and bar?
 
-    A: <Your answer goes here>
+    A:  foo : int2Bin
+        bar : intListToBinList
         
     Q: The function foo does not return reasonable results for all possible inputs.
        What requirements must we have on the input to foo in order to get reasonable results?
     
-    A: <Your answer goes here>
+    A: for 0 the result will be "" when it should be 0, and for negative numbers the pattern matching is not exhaustive
     *)
         
 
@@ -99,15 +124,20 @@
     
     Q: What warning and why?
 
-    A: <Your answer goes here>
+    A: Non exhaustive pattern matching this is because we match with 0 or x when <statement> the compiler expects there to be a catchall since there could be edge cases we're handling
 
     *)
 
-    let foo2 _ = failwith "not implemented"
+    let rec foo2 =
+        function
+        | 0 -> ""
+        | x -> foo2 (x/2) + $"%i{x%2}"
+
 
 (* Question 2.3 *) 
 
-    let bar2 _ = failwith "not implemented"
+    let bar2 =
+        List.map foo2
 
 (* Question 2.4 *)
 
@@ -120,20 +150,35 @@
        Keep in mind that all steps in an evaluation chain must evaluate to the same value
        ((5 + 4) * 3 --> 9 * 3 --> 27, for instance).
 
-    A: <Your answer goes here>
+    A: foo is not tail recursive as the last action that is performed if not a call to foo it is a cons operation
     
     Q: Even though neither `foo` nor `bar` is tail recursive only one of them runs the risk of overflowing the stack.
        Which one and why does  the other one not risk overflowing the stack?
 
-    A: <Your answer goes here>
+        I am really not sure this is correct but I am too lazy to look it up
+    A:  Bar has linear recursion and foo has logarithmic recursion, this means that the numbers will have to be very large to cause a stack overflow. 
+        Since bar is linear in regards to recursion depth, it might cause a stack overflow for large lists
 
     *)
 (* Question 2.5 *)
 
-    let fooTail _ = failwith "not implemented"
-
+    let fooTail x =
+        let rec inner prev next acc =
+            if next = 0 then
+                prev+acc
+            else
+                inner $"%i{next%2}" (next/2) (prev + acc)
+        inner "" x ""
 (* Question 2.6 *)
-    let barTail _ = failwith "not implemented"
+    
+    let barTail lst =
+        let rec inner cont lst =
+            match lst with
+            | [] -> []
+            | [x] -> cont [foo2 x]
+            | x::xs ->
+                inner (fun next -> cont ((foo2 x)::next)) xs
+        inner id lst
 
 (* 3: Matrix operations *)
 

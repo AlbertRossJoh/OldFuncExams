@@ -4,16 +4,33 @@ open Exam2022
 let testQ1 () =
     (* Testsfor Q1.1 *)
     printfn "Testing Question 1"
-    (*
-    printfn "%A" (countWhite (Square 123uy))
-    printfn "%A" (countWhite img)
-    *)
-
+    // printfn "%A" (countWhite (Square 123uy))
+    // printfn "%A" (countWhite img)
+    // printfn "%A" (rotateRight (Square 123uy))
+    // printfn "%A" (rotateRight (Quad(Square 0uy, Square 85uy, Square 170uy, Square 255uy)))
+    // printfn "%A" (rotateRight img)
+    // printfn "%A" (map (fun x -> Square(x+10uy)) (Square(0uy)))
+    // printfn "%A" (map (fun x -> Square(x+10uy)) (Quad (Square 0uy, Square 85uy, Square 170uy, Square 255uy)))
+    // printfn "%A" (map (fun x -> Quad (Square (x+10uy), Square (x+20uy), Square (x+30uy), Square (x+40uy))) (Square(123uy)))
+    // printfn "%A" (bitmap (Square 120uy))
+    // printfn "%A" (bitmap (Square 150uy))
+    // printfn "%A" (bitmap img)
+    // printfn "%A" (fold (fun acc x -> acc + int x) 0 (Square 123uy))
+    // printfn "%A" (fold (fun acc x -> acc + int x) 0 (Quad (Square 0uy, Square 85uy, Square 170uy, Square 255uy)))
+    // printfn "%A" (fold (fun acc x -> acc + int x) 0 img)
+    // printfn "%A" (countWhite2 (Square 123uy))
+    // printfn "%A" (countWhite2 img)
     ()
 
 let testQ2 () =
     printfn "Testing Question 2"
-    // place debug prints for Q2 here
+    printfn "%A" (bar2 [0..10] |> List.indexed |> List.map (fun (idx, item) -> (sprintf "%B" idx, idx, item)))
+    // printfn "%A" (bar [0..1000000000])
+    // printfn "%A" (fooTail 0)
+    // printfn "%A" (fooTail 2)
+    // printfn "%A" (fooTail 3)
+    // printfn "%A" (fooTail 4)
+    printfn "%A" (barTail [0..10] |> List.indexed |> List.map (fun (idx, item) -> (sprintf "%B" idx, idx, item)))
     ()
 
 let testQ3 () =

@@ -6,8 +6,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="JParsec.fs" />
         <Compile Include="JParsec.fsi" />
+        <Compile Include="JParsec.fs" />
         <Compile Include="ExamScaffold.fs" />
         <Compile Include="Exam.fs" />
         <None Include="ExamInteractive.fsx" />
