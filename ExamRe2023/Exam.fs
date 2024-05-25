@@ -322,7 +322,15 @@
             
 (* Question 3.5: Parallel counting *)
 
-    let countBalanced _ = failwith "not implemented"
+    let countBalanced lst i =
+        List.splitInto i lst
+        |> List.toArray
+        |> Array.Parallel.map
+               (List.map balanced3
+                >> List.filter id
+                >> List.length)
+        |> Array.sum
+        
 
 (* 4: BASIC *)
     
