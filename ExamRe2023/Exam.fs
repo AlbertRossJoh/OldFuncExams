@@ -497,7 +497,33 @@
 
     let state = StateBuilder()
 
-    let evalExpr2 _ = failwith "not implemented"
+    let rec evalExpr2 exp =
+        match exp with
+        | Num v -> ret v
+        | Lookup v -> lookup2 v
+        | x ->
+            let expr1, expr2, op =
+                match x with
+                | Minus(expr, expr1) -> expr, expr1, (-)
+                | Plus(expr, expr1) -> expr, expr1, (+)
+                | _ -> failwith "Will never happen"
+            evalExpr2 expr1 >>= fun a ->
+            evalExpr2 expr2 >>= fun b ->
+            ret (op a b)
+            
     
-    let evalProg2 _ = failwith "not implemented"
+    let rec evalProg2 =
+        getCurrentStmnt2 >>= fun stmnt ->
+        match stmnt with
+        | End -> ret ()
+        | Goto l -> goto2 l >>>= evalProg2
+        | Let(v, expr) -> evalExpr2 expr >>= update2 v >>>= step2 >>>= evalProg2
+        | If(expr, l) ->
+            evalExpr2 expr >>= fun a ->
+            if a <> 0 then
+                goto2 l >>>= evalProg2
+            else
+                step2 >>>= evalProg2
+        
+            
         

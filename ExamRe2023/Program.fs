@@ -90,6 +90,13 @@ let testQ4 () =
     // printfn "%A" (update2 "x" 42 |> evalSM fp)
     // printfn "%A" (update2 "x" 42 >>>= lookup2 "x" |> evalSM fp)
     // printfn "%A" (goto2 50u >>>= step2 |> evalSM fp)
+    // printfn "%A" (Num 5 |> evalExpr2 |> evalSM fp)
+    // printfn "%A" (update2 "x" 42 >>>= evalExpr2 (Lookup "x") |> evalSM fp)
+    // printfn "%A" (update2 "x" 42 >>>= evalExpr2 (Plus (Lookup "x", Num 5)) |> evalSM fp)
+    let smallProg = [(10u, Let ("x", Num 42)); (20u, End)] |> mkBasicProgram
+    // printfn "%A" (evalProg2 |> evalSM smallProg)
+    printfn "%A" (evalProg2 |> evalSM fp)
+    printfn "%A" (evalProg2 >>>= lookup2 "result" |> evalSM fp)
     ()
 
 
