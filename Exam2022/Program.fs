@@ -1,5 +1,7 @@
 ﻿open System
 open Exam2022
+open Microsoft.FSharp.Core
+open JParsec.TextParser
 
 let testQ1 () =
     (* Testsfor Q1.1 *)
@@ -46,11 +48,43 @@ let testQ3 () =
 
 let testQ4 () =
     printfn "Testing Question 4"
-    // place debug prints for Q4 here
+    // printfn "%A" (runStackProgram [Push 5])
+    // printfn "%A" (runStackProgram [Push 5; Push 4; Add; Push 8; Mult])
+    // printfn "%A" (runStackProgram [Push 5; Push 4; Add; Push 8; Mult; Push 42; Add])
+    // printfn "%A" (runStackProgram [Push 5; Push 4; Add; Push 8; Mult; Mult])
+    // printfn "%A" (push 5 >>>= push 6 >>>= pop |> evalSM)
+    // printfn "%A" (pop |> evalSM)
+    // printfn "%A" ([Push 5] |> runStackProg2 |> evalSM |> Option.map fst)
+    // printfn "%A" ([Push 5; Push 4; Add; Push 8; Mult] |> runStackProg2 |> evalSM |> Option.map fst)
+    // printfn "%A" ([Push 5; Push 4; Add; Push 8; Mult; Push 42; Add] |> runStackProg2 |> evalSM |> Option.map fst)
+    // printfn "%A" ([Push 5; Push 4; Add; Push 8; Mult; Mult] |> runStackProg2 |> evalSM |> Option.map fst)
+    // printfn "%A" ([] |> runStackProg2 |> evalSM |> Option.map fst)
+    let str = 
+        "PUSH 5\nPUSH 4   \nADD  \n   PUSH   8\nMULT   \n" |>
+        Seq.toArray
+        |> Array.map (fun c -> if c = '\n' then 'x' else c)
+        |> String.Concat
+    
+    run parseStackProg str |>
+    getSuccess |>
+    runStackProg2 |>
+    evalSM |>
+    Option.map fst |>
+    (printfn "%A")
+    // printfn
+    // "      PUSH     5    xADDx" |>
+    // run parseStackProg |>
+    // (printfn "%A")
+    // getSuccess |>
+    // runStackProg2 |>
+    // evalSM |>
+    // Option.map fst |>
+    // (printfn "%A")
     ()
 
 [<EntryPoint>]
 let main argv =
     // testQ1 ()
-    testQ3 ()
+    // testQ3 ()
+    testQ4()
     0 // return an integer exit code

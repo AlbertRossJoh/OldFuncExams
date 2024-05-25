@@ -1,5 +1,6 @@
 ﻿module Exam2022
 
+    open Exam2022Scaffold
     open Microsoft.FSharp.Control
 
 (* If you are importing this into F# interactive then comment out
@@ -255,12 +256,26 @@
 
 (* Question 4.1 *)
 
-    type stack = unit (* replace this entire type with your own *)
-    let emptyStack _ = failwith "not implemented"
+    type stack = int list (* replace this entire type with your own *)
+    let emptyStack () : stack = List.empty
 
 (* Question 4.2 *)
 
-    let runStackProgram _ = failwith "not implemented"
+    let runStackProgram sp =
+        let s = emptyStack()
+        let rec inner s sp =
+            match sp with
+            | [] -> List.head s
+            | x::xs ->
+                match x with
+                | Push v -> inner (v::s) xs
+                | Add | Mult ->
+                    let op = if x = Add then (+) else (*)
+                    match s with
+                    | a::b::abs ->
+                        inner ((op a b)::abs) xs
+                    | _ -> failwith "Not enough items on the stack"
+        inner s sp
 
 (* Question 4.3 *)
     
@@ -281,8 +296,13 @@
 
     let evalSM (SM f) = f (emptyStack ())
 
-    let push _ = failwith "not implemented"
-    let pop _ = failwith "not implemented"
+    let push v =
+        SM(fun s -> Some((),v::s) )
+    let pop =
+        SM(function
+           | [] -> None
+           | x::xs -> Some(x, xs))
+        
 
 (* Question 4.4 *)
 
@@ -294,11 +314,42 @@
         member this.Combine(a, b) = a >>= (fun _ -> b)
 
     let state = new StateBuilder()
-
-    let runStackProg2 _ = failwith "not implemented"
+    
+    let rec runStackProg2 sp =
+        match sp with
+        | [] -> pop
+        | x::xs ->
+            match x with
+            | Push v -> push v >>>= runStackProg2 xs
+            | Add | Mult ->
+                let op = if x = Add then (+) else (*)
+                pop >>= fun a ->
+                pop >>= fun b ->
+                push (op a b) >>>=
+                runStackProg2 xs
+            
     
 (* Question 4.5 *)
     
+    
     open JParsec.TextParser
-
-    let parseStackProg _ = failwith "not implemented"
+    let whitespaceChar = satisfy System.Char.IsWhiteSpace 
+    // let newLineChar = satisfy (fun c -> c = '\n')
+    let spaces = many whitespaceChar
+    let (.>*>.) p1 p2 = p1 .>> spaces .>>. p2
+    let (.>*>) p1 p2 = p1 .>> spaces .>> p2 
+    let (>*>.) p1 p2 = p1 .>> spaces >>. p2  
+    let StmntParse, bref = createParserForwardedToRef()
+    
+    // I cannot get newlines to work
+    let parseStackProg =
+        choice [
+            spaces >>. pstring "PUSH" >*>. pint32 .>*> pchar 'x' |>> Push
+            spaces >>. pstring "ADD" .>*> pchar 'x' |>> (fun _ -> Add)
+            spaces >>. pstring "MULT" .>*> pchar 'x' |>> (fun _ -> Mult)
+        ] |> many
+        
+    // uncomment after you have done parseBalancedAUX
+    
+    do bref := parseStackProg 
+            
