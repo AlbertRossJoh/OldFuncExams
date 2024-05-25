@@ -183,7 +183,24 @@
     *)
 (* Question 2.5: Continuations *)
 
-    let bazTail _ = failwith "not implemented"
+    let bazTail =
+        let rec inner cont a =
+            match a with
+            | [] -> [],[]
+            | [x] ->
+                if isEven x then
+                    cont ([x], [])
+                else
+                    cont ([], [x])
+            | x::xs ->
+                inner (fun next ->
+                    let evens, odds = next
+                    let ret =
+                        if isEven x then (x::evens, odds)
+                        else (evens, x::odds)
+                    cont ret) xs
+        inner id 
+            
 
 (* 3: Balanced brackets *)
 

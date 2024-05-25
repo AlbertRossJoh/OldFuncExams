@@ -30,6 +30,7 @@ let testQ1 () =
 let testQ2 () =
     printfn "Testing Question 2"
     printfn "%A" (getEvenAndUneven [1..10])
+    printfn "%A" (bazTail [1..10])
     ()
 
 let testQ3 () =
