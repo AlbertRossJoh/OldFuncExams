@@ -24,18 +24,24 @@ let testQ1 () =
 
 let testQ2 () =
     printfn "Testing Question 2"
-    printfn "%A" (bar2 [0..10] |> List.indexed |> List.map (fun (idx, item) -> (sprintf "%B" idx, idx, item)))
+    // printfn "%A" (bar2 [0..10] |> List.indexed |> List.map (fun (idx, item) -> (sprintf "%B" idx, idx, item)))
     // printfn "%A" (bar [0..1000000000])
     // printfn "%A" (fooTail 0)
     // printfn "%A" (fooTail 2)
     // printfn "%A" (fooTail 3)
     // printfn "%A" (fooTail 4)
-    printfn "%A" (barTail [0..10] |> List.indexed |> List.map (fun (idx, item) -> (sprintf "%B" idx, idx, item)))
+    // printfn "%A" (barTail [0..10] |> List.indexed |> List.map (fun (idx, item) -> (sprintf "%B" idx, idx, item)))
     ()
 
 let testQ3 () =
     printfn "Testing Question 3"
-    // place debug prints for Q3 here
+    // add (init (fun x y -> x + y) 2 3) (init (fun x y -> x * y) 2 3) |> print
+    // add (init (fun x y -> x + y) 2 3) (init (fun x y -> x * y) 3 2)
+    // printfn "%A" (dotProduct m1 m2 0 1)
+    // printfn "%A" (dotProduct m1 m2 1 0)
+    // mult m1 m2 |> print
+    // mult m1 (init (fun _ _ -> 0) 1 9)
+    // parInit (fun i j -> i * 3 + j + 1) 2 3 |> print
     ()
 
 let testQ4 () =
@@ -45,5 +51,6 @@ let testQ4 () =
 
 [<EntryPoint>]
 let main argv =
-    testQ1 ()
+    // testQ1 ()
+    testQ3 ()
     0 // return an integer exit code

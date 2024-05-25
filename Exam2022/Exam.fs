@@ -1,4 +1,7 @@
 ﻿module Exam2022
+
+    open Microsoft.FSharp.Control
+
 (* If you are importing this into F# interactive then comment out
    the line above and remove the comment for the line bellow.
 
@@ -200,23 +203,51 @@
 
 (* Question 3.1 *)
 
-    let failDimensions _ = failwith "not implemented"
+    let failDimensions m1 m2 = failwith $"Invalid matrix dimensions: m1 rows = %A{numRows m1}, m1 columns = %A{numCols m1}, m2 rows = %A{numRows m2}, m2 columns = %A{numCols m2}"
 
 (* Question 3.2 *)
 
-    let add _ = failwith "not implemented"
+    let dimCheck a b checkRowCol =
+        if checkRowCol then
+            if numCols a <> numRows b then
+                failDimensions a b
+        else
+            if numCols a <> numCols b || numRows a <> numRows b then
+                failDimensions a b
+    
+    let add a b : matrix =
+        dimCheck a b false
+        let rows, cols = numRows a, numCols a
+        init (fun row col -> get a row col + get b row col) rows cols
 
 (* Question 3.3 *)
     
     let m1 = (init (fun i j -> i * 3 + j + 1) 2 3) 
     let m2 = (init (fun j k -> j * 2 + k + 1) 3 2)
 
-    let dotProduct _ = failwith "not implemented"
-    let mult _ = failwith "not implemented"
+    let dotProduct a b row col =
+        dimCheck a b true
+        let rec inner offset acc =
+            if offset >= numCols a then
+                acc
+            else
+                inner (offset+1) (acc+(get a row offset * get b offset col))
+        inner 0 0
+    let mult a b : matrix =
+        dimCheck a b true
+        init (dotProduct a b) (numRows a) (numCols b)
 
 (* Question 3.4 *)
-    let parInit _ = failwith "not implemented"
-
+    let parInit (f: int -> int -> int) rows cols =
+        let m = Array2D.zeroCreate rows cols
+        [for row in 0..rows-1 do
+            for col in 0..cols-1 do
+                async { set m row col (f row col) }]
+        |> Async.Parallel
+        |> Async.RunSynchronously
+        |> ignore
+        m
+        
 (* 4: Stack machines *)
 
     type cmd = Push of int | Add | Mult
