@@ -424,13 +424,36 @@
     
 (* Question 4.3: Evaluation *)
     
-    let evalExpr _ = failwith "not implemented"
+    let rec evalExpr e st =
+        match e with
+        | Num x -> x
+        | Lookup v -> lookup v st
+        | Plus(e1, e2) -> evalExpr e1 st + evalExpr e2 st
+        | Minus(e1, e2) -> evalExpr e1 st - evalExpr e2 st
     
     
-    let step _ = failwith "not implemented"
+    let step bp st =
+        { st with lineNumber = bp |> nextLine (getLineNumber st) }
   
         
-    let evalProg _ = failwith "not implemented"
+    let evalProg bp =
+        let st = emptyState bp
+        let rec inner st =
+            match getCurrentStmnt bp st with
+            | If(e, l) ->
+                let stm = evalExpr e st <> 0
+                let ret = 
+                    if stm then
+                        goto l st
+                    else
+                        st |> step bp
+                inner ret
+            | Let(v, e) ->
+                let e = evalExpr e st
+                update v e st |> goto (nextLine (getLineNumber st) bp) |> inner
+            | Goto l -> goto l st |> inner
+            | End -> st
+        inner st
     
 (* Question 4.4: State monad *)
     type StateMonad<'a> = SM of (basicProgram -> state -> 'a * state)  

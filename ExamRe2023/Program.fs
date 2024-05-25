@@ -70,12 +70,21 @@ let testQ4 () =
     // printfn "%A" (getStmnt 50u fp)
     // printfn "%A" (nextLine 50u fp)
     // printfn "%A" (firstLine fp)
-    printfn "%A" (emptyState fp)
-    printfn "%A" (emptyState fp |> goto 50u)
-    printfn "%A" (emptyState fp |> getCurrentStmnt fp)
-    printfn "%A" (emptyState fp |> goto 50u |> getCurrentStmnt fp)
-    printfn "%A" (emptyState fp |> update "x" 42)
-    printfn "%A" (emptyState fp |> update "x" 42 |> lookup "x")
+    // printfn "%A" (emptyState fp)
+    // printfn "%A" (emptyState fp |> goto 50u)
+    // printfn "%A" (emptyState fp |> getCurrentStmnt fp)
+    // printfn "%A" (emptyState fp |> goto 50u |> getCurrentStmnt fp)
+    // printfn "%A" (emptyState fp |> update "x" 42)
+    // printfn "%A" (emptyState fp |> update "x" 42 |> lookup "x")
+    let st = emptyState fp
+    let st' = update "x" 42 st
+    // printfn "%A" (evalExpr (Num 5) st)
+    // printfn "%A" (evalExpr (Lookup "x") st')
+    // printfn "%A" (evalExpr (Plus(Lookup "x", Num 5)) st')
+    let smallProg = [(10u, Let("x", Num 42)); (20u, End)] |> mkBasicProgram
+    // printfn "%A" (evalProg smallProg)
+    // printfn "%A" (evalProg fp)
+    // printfn "%A" (fp |> evalProg |> lookup "result")
     ()
 
 
