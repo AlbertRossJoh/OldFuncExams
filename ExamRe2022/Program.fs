@@ -54,11 +54,23 @@ let testQ3 () =
 
 let testQ4 () =
     printfn "Testing Question 4"
-    // place debug prints for Q4 here
+    // printfn "%A" (assemblyToProgram (factorial 10))
+    // printfn "%A" (factorial 10 |> emptyState |> getRegister R1)
+    // printfn "%A" (factorial 10 |> emptyState |> setRegister R1 10 |> getRegister R1)
+    // printfn "%A" (factorial 10 |> emptyState |> setProgramCounter 100u |> getProgramCounter)
+    // printfn "%A" (getReg R1 |> evalSM (factorial 10) |> fst)
+    // printfn "%A" (setReg R1 10 >>>= getReg R1 |> evalSM (factorial 10) |> fst)
+    // printfn "%A" (lookupCmd |> evalSM (factorial 10) |> fst)
+    // printfn "%A" (incPC >>>= lookupCmd |> evalSM (factorial 10) |> fst)
+    // printfn "%A" (incPC >>>= incPC >>>=incPC >>>=lookupCmd |> evalSM (factorial 10) |> fst)
+    // printfn "%A" (setPC 100u >>>= lookupCmd |> evalSM (factorial 10) |> fst)
+    printfn "%A" (runProgram () >>>= getReg R1 |> evalSM (factorial 5) |> fst)
+    printfn "%A" (runProgram () >>>= getReg R1 |> evalSM (factorial 10) |> fst)
     ()
 
 [<EntryPoint>]
 let main argv =
     // testQ1 ()
-    testQ3()
+    // testQ3()
+    testQ4()
     0 // return an integer exit code

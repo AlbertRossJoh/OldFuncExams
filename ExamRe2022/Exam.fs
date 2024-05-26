@@ -269,26 +269,47 @@
     
 (* Question 4.1 *)
 
-    type program = unit (* replace this entire type with your own *)
-    let assemblyToProgram _ = failwith "not implemented"
-
+    type program = assembly list
+    
+    let assemblyToProgram instructions : program = instructions
+        
 (* Question 4.2 *)
 
-    type state = unit (* replace this entire type with your own *)
-    let emptyState _ = failwith "not implemented"
+    type state = {
+        registers: int list
+        programCounter: uint
+        source: program
+    }
+    let emptyState cmds =
+        {
+            registers = [0;0;0]
+            programCounter = 0u
+            source = assemblyToProgram cmds
+        }
     
 
 (* Question 4.3 *)
 
-    let setRegister _ = failwith "not implemented"
+    let registers = [R1;R2;R3]
+    let registerIdx r = registers |> List.findIndex ((=) r)
+    let replaceAt lst i v =
+        lst |> List.mapi (fun idx item -> if idx = i then v else item)
+        
+    let setRegister register c st =
+        let idx = registerIdx register
+        { st with registers = replaceAt st.registers idx c }
+    let getRegister register st =
+        let idx = registerIdx register
+        st.registers[idx]
     
-    let getRegister _ = failwith "not implemented"
+    let setProgramCounter addr st =
+        { st with programCounter = addr }
     
-    let setProgramCounter _ = failwith "not implemented"
+    let getProgramCounter st =
+        st.programCounter
     
-    let getProgramCounter _ = failwith "not implemented"
-    
-    let getProgram _ = failwith "not implemented"
+    let getProgram st =
+        st.source
     
 (* Question 4.4 *)
     
@@ -306,15 +327,20 @@
 
     let evalSM prog (SM f) = f (emptyState prog)
 
-    let setReg _ = failwith "not implemented"
+    let setReg r v =
+        SM(fun st -> (),setRegister r v st)
     
-    let getReg _ = failwith "not implemented"
+    let getReg r =
+        SM(fun st -> getRegister r st, st)
     
-    let setPC _ = failwith "not implemented"
+    let setPC addr =
+        SM(fun st -> (), setProgramCounter addr st)
     
-    let incPC _ = failwith "not implemented"
+    let incPC =
+        SM(fun st -> (), setProgramCounter (st.programCounter+1u) st)
     
-    let lookupCmd _ = failwith "not implemented"
+    let lookupCmd =
+        SM(fun st -> List.tryItem (int st.programCounter) st.source, st)
     
 
 
@@ -329,5 +355,32 @@
 
     let state = new StateBuilder()
 
-    let runProgram _ = failwith "not implemented"
+    let mOp r1 r2 r3 op =
+        getReg r2 >>= fun a ->
+        getReg r3 >>= fun b ->
+        setReg r1 (op a b)
     
+    let dbug r1 r2 r3 =
+        getReg r1 >>= fun a ->
+        getReg r2 >>= fun b ->
+        getReg r3 >>= fun c ->
+        printf $"%A{(a, b, c)}"
+        ret ()
+    
+    let rec runProgram () =
+        lookupCmd >>= fun cmd ->
+        match cmd with
+        | None -> ret ()
+        | Some cmd ->
+            let next = 
+                match cmd with
+                | MOVI(r, v) -> setReg r v >>>= incPC 
+                | MULT(r1, r2, r3) ->
+                    mOp r1 r2 r3 (*) >>>= incPC 
+                | SUB(r1, r2, r3) ->
+                    mOp r1 r2 r3 (-) >>>= incPC 
+                | JGTZ(r, addr) ->
+                    getReg r >>= fun v ->
+                    if v > 0 then setPC addr 
+                    else incPC
+            next >>= runProgram
