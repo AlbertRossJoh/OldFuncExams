@@ -121,13 +121,13 @@
         inner mlst pos id
 
 (* 2: Code Comprehension *)
-    let foo f =
+    let foo bar =
         let mutable m = Map.empty
         let aux x =
             match Map.tryFind x m with
             | Some y when Map.containsKey x m -> y
-            | None   -> 
-            m <- Map.add x (f x) m; f x
+            | None   ->
+            m <- Map.add x (bar x) m; bar x
 
         aux
 
@@ -145,30 +145,42 @@
     
     Q: What are the types of functions foo, bar, and baz?
 
-    A: <Your answer goes here>
+    A:  foo : (int -> int) -> int -> int
+        bar : int -> int
+        baz : int -> int
 
 
     Q: What do functions foo and baz do (skip bar)?
        Focus on what they do rather than how they do it.
 
-    A: <Your answer goes here>
+    A:  foo gets a number if it has been calculated (memoization)
+        baz get the memoized number
 
     The function foo uses a mutable variable.
 
     Q: What function does it serve (why is it there)?
 
-    A: <Your answer goes here>
-
+    A:  Since the fibonacci sequence is a tree like structure the repeating parts of the fibonacci sequence would appear at different times
+        it will not be possibles for these lower level of recursion to get the same value if the map was not mutable
+        
+                     5
+                3          2
+             2     1      1   1
+            1  1  1  0  1  0
+          1  0
     Q: What would happen if you removed the mutable keyword from the line
        let mutable m = Map.empty? Would the function foo still work?
        If yes, why; if no, why not?
 
-    A: <Your answer goes here>
+    A:  no were mutating it  with "m <- Map.add x (bar x) m; bar x" we would need to change how the function "foo" passes on state if we remove it
+        though if we changed it to not be mutable we might as well not have it for the reasons explained above
 
     Q: What would be appropriate names for functions 
        foo, bar, and baz?
 
-    A: <Your answer goes here>
+    A:  foo -> memoize
+        bar -> recurse
+        baz -> fibonacci
     
     *)
         
@@ -183,14 +195,14 @@
     Q: What function does this keyword serve in general
        (why would you use "and" when writing any program)?
 
-    A: <Your answer goes here>
+    A: the keyword and it utilized for mutual recursion, this is done since bar has to call baz and baz has to call bar
 
 
     Q: What would happen if you removed it from this particular program and
        replaced it with a standard "let"
        (change the line "and baz = foo bar" to "let baz = foo bar")?
 
-    A: <Your answer goes here>
+    A: it would not compile
 
     *)
 
@@ -202,20 +214,21 @@
 
     Q: Why does this happen, and where? 
 
-    A: <Your answer goes here>
+    A: it happens when matching the "tryfind" since there is a conditional in the expression 
+    the compiler thinks that there are some cases that are possibly not covered but in this case it is not a problem
 
 
     Q: For these particular three functions will this incomplete pattern match
        ever cause problems for any possible execution of baz? If yes, why;
        if no, why not.
 
-    A: <Your answer goes here>
+    A: no if it matches with some it will already have found a key and thus the containskey is redundant
 
     Q: The function foo has two redundant computations and is hence not as
        efficient as it could be. What are these two computations and why
        are they redundant?
 
-    A: <Your answer goes here>
+    A: as explained above the containsKey is redundant, the second computation is the "bar x" which is done twice this can be reduced to a single function call
 
     *)
 
