@@ -24,7 +24,10 @@ let testQ1() =
 
 let testQ2() =
     // place debug prints for Q2 here
-    printfn "%A" (baz 100)
+    // printfn "%A" (baz 100100)
+    // printfn "%A" (barbaz 3)
+    // printfn "%A" (Seq.item 10 bazSeq)
+    // printfn "%A" (Seq.item 100100 bazSeq)
     ()
 
 let testQ3 =

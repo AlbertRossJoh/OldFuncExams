@@ -250,12 +250,13 @@
        Why? You do not have to give exact times, just spot which one is
        slower and explain why.
 
-    A: <Your answer goes here>
+    A: barbaz is slower cause aux in foo does not get an input this means that it will only execute once we have reached the leaf nodes in the fibonacci sequence
 
     *)
 (* Question 2.5 *)
 
-    let bazSeq _ = failwith "not implemented"
+    let bazSeq =
+        Seq.initInfinite baz
 
 (* 3: Guess the next sequence element *)
 
