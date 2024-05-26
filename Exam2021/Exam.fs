@@ -27,30 +27,75 @@
     type direction = North | East | South | West
     type coord     = C of int * int
 
-    let move _ = failwith "not implemented"
-    let turnRight _ = failwith "not implemented"
-    let turnLeft _ = failwith "not implemented"
+    let move dist dir (C(x, y) : coord) =
+        match dir with
+        | North -> C(x,y-dist)
+        | South -> C(x,y+dist)
+        | West -> C(x-dist,y)
+        | East -> C(x+dist,y)
+    let turnRight dir =
+        match dir with
+        | North -> East
+        | East -> South
+        | South -> West
+        | West -> North
+        
+    let turnLeft dir =
+        match dir with
+        | North -> West
+        | East -> North
+        | South -> East
+        | West -> South
+                
     
 (* Question 1.2 *)
 
     type position = P of (coord * direction)
     type move     = TurnLeft | TurnRight | Forward of int
 
-    let step _ = failwith "not implemented"
+    let step (P(pos, dir)) m =
+        match m with
+        | TurnLeft -> P(pos, turnLeft dir)
+        | TurnRight -> P(pos, turnRight dir)
+        | Forward x -> P(move x dir pos, dir)
+        
 
 (* Question 1.3 *)
 
 
-    let walk _ = failwith "not implemented"
+    let rec walk pos =
+        function
+        | [] -> pos
+        | x::xs -> walk (step pos x) xs
+
+    let rec walk2 pos mlst =
+        (pos, mlst) ||> List.fold step
 
 (* Question 1.4 *)
 
-    let path _ = failwith "not implemented"
+    let path pos mlst =
+        let rec inner rest pos =
+            match rest with
+            | [] -> []
+            | x::xs ->
+                let pos2 = step pos x
+                match x with
+                | Forward _ -> pos2::inner xs pos2
+                | _ -> inner xs pos2
+        pos::inner mlst pos |> List.map (fun (P(c, _)) -> c)
 
 (* Question 1.5 *)
 
-    let path2 _ = failwith "not implemented"
-
+    let path2 pos mlst =
+        let rec inner rest (P(pos,dir)) acc =
+            match rest with
+            | [] -> pos::acc
+            | x::xs ->
+                let pos2 = step (P(pos, dir)) x
+                match x with
+                | Forward _ -> inner xs pos2 (pos::acc)
+                | _ -> inner xs pos2 acc
+        inner mlst pos [] |> List.rev
 (* Question 1.6 *)
 
 (* Q: Your solution for `path` is not tail recursive. Why? To make a compelling
@@ -61,10 +106,19 @@
       chain must evaluate to the same value
       (```(5 + 4) * 3 --> 9 * 3 --> 27```, for instance).
 
-   A: <Your answer goes here>
+   A: the last function call to inner is not always inner it is the cons operation
 *)
 
-    let path3 _ = failwith "not implemented"
+    let path3 pos mlst =
+        let rec inner rest (P(pos,dir)) cont =
+            match rest with
+            | x::xs ->
+                let pos2 = step (P(pos, dir)) x
+                match x with
+                | Forward _ -> inner xs pos2 (fun next -> cont (pos::next))
+                | _ -> inner xs pos2 cont
+            | [] -> cont [pos]
+        inner mlst pos id
 
 (* 2: Code Comprehension *)
     let foo f =

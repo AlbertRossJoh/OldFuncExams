@@ -4,11 +4,21 @@ open Exam2021
 let testQ1() =
     (* Testsfor Q1.1 *)
 
-    (*
-    printfn "%A" (move 10 North (C (0, 0)))
-    printfn "%A" (turnRight North)
-    printfn "%A" (turnLeft North)
-    *)
+    // printfn "%A" (move 10 North (C (0, 0)))
+    // printfn "%A" (turnRight North)
+    // printfn "%A" (turnLeft North)
+    // printfn "%A" (step (P(C(0,0), North)) TurnRight)
+    // printfn "%A" (step (P(C(0,0), North)) TurnLeft)
+    // printfn "%A" (step (P(C(0,0), North)) (Forward 10))
+    // printfn "%A" (walk (P(C(0,0), North)) [TurnRight; Forward 10; TurnLeft])
+    // printfn "%A" (walk2 (P(C(0,0), North)) [TurnRight; Forward 10; TurnLeft])
+    printfn "%A" (path (P(C(0,0), North)) [TurnRight; Forward 10; TurnLeft])
+    printfn "%A" (path (P(C(0,0), North)) [Forward 5; TurnRight;Forward 5; TurnRight;Forward 5; TurnRight;Forward 5])
+    printfn "%A" (path2 (P(C(0,0), North)) [TurnRight; Forward 10; TurnLeft])
+    printfn "%A" (path2 (P(C(0,0), North)) [Forward 5; TurnRight;Forward 5; TurnRight;Forward 5; TurnRight;Forward 5])
+    printfn "%A" (path3 (P(C(0,0), North)) [TurnRight; Forward 10; TurnLeft])
+    printfn "%A" (path3 (P(C(0,0), North)) [Forward 5; TurnRight;Forward 5; TurnRight;Forward 5; TurnRight;Forward 5])
+    
 
     ()
 
