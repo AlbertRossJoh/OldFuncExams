@@ -30,8 +30,15 @@ let testQ2() =
     // printfn "%A" (Seq.item 100100 bazSeq)
     ()
 
-let testQ3 =
+let testQ3() =
     // place debug prints for Q3 here
+    printfn "%A" (elToString [1;1;1;3;2;2;1])
+    printfn "%A" (elFromString "1113221")
+    printfn "%A" (elFromString "1113221" |> elToString)
+    printfn "%A" (elFromString "1113221" |> nextElement)
+    printfn "%A" (elFromString "1" |> nextElement |> nextElement)
+    printfn "%A" ("1" |> elFromString |> nextElement |> nextElement |>
+         nextElement |> nextElement |> nextElement |> elToString)
     ()
 
 let testQ4 =
@@ -41,5 +48,6 @@ let testQ4 =
 [<EntryPoint>]
 let main argv =
     // testQ1 ()
-    testQ2 ()
+    // testQ2 ()
+    testQ3 ()
     0 // return an integer exit code

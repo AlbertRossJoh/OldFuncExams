@@ -262,16 +262,30 @@
 
 (* Question 3.1 *)
 
-    type element = unit (* Your type goes here in stead of unit *)
+    type element = int list (* Your type goes here in stead of unit *)
 
 (* Question 3.2 *)
 
-    let elToString _ = failwith "not implemented"
-    let elFromString _ = failwith "not implemented"
+    let elToString (elm: element) =
+        ("", elm) ||> List.fold (fun acc item -> acc+item.ToString())
+    let elFromString (str: string) : element =
+        ([], str) ||> Seq.fold (fun acc c -> (int c - 48)::acc) |> List.rev
 
 (* Question 3.3 *)
 
-    let nextElement _ = failwith "not implemented"
+    let nextElement (elm: element) =
+        if List.isEmpty elm then
+            []
+        else
+            let rec inner acc rest curr currCount =
+                match rest with
+                | [] -> curr::(currCount+1)::acc
+                | x::xs when x = curr -> inner acc xs x (currCount+1)
+                | x::xs -> inner (curr::(currCount+1)::acc) xs x 0
+            inner [] (List.tail elm) (List.head elm) 0
+            |> List.rev
+                    
+        
 
 (* Question 3.4 *)
 
