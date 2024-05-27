@@ -347,13 +347,16 @@
     let push item (r: 'a ring) : 'a ring = 
         (fst r, item::(snd r))
     let peek (r: 'a ring) =
-        List.tryHead (snd r)
+        match r with
+        | [], [] -> None
+        | _, x::_-> Some(x)
+        | xs, []-> List.tryLast xs
     let pop (r: 'a ring) =
         match r with
         | [],[] -> None
         | [], _::xs-> Some([],xs)
-        | _::xs, []-> Some(xs,[])
-        | _ -> failwith "todo"
+        | xs, []-> Some(xs |> List.removeAt (List.length xs - 1),[])
+        | ys, _::xs -> Some(ys, xs)
     let cw (r:'a ring) =
         match r with
         | [], xs ->
@@ -361,10 +364,10 @@
             (List.tail tmp, [List.head tmp])
         | y::ys, xs -> (ys,y::xs)
     let ccw (r:'a ring) =
-            match r with
-            | a, x::xs -> x::a,xs
-            | x::xs, a -> xs,x::a
-            | a -> a
+        match r with
+        | a, x::xs -> x::a,xs
+        | x::xs, a -> xs,x::a
+        | a -> a
 
 (* Question 4.4 *)
 
@@ -413,5 +416,20 @@
 
     let state = new StateBuilder()
 
-    let ringStep _ = failwith "not implemented"
-    let iterRemoveSumEven _ = failwith "not implemented"
+    let ringStep =
+        smLength >>= fun len ->
+            if len < 2 then
+                ret ()
+            else
+                smPop >>= fun a ->
+                smPop >>= fun b ->
+                if (a+b)%2 = 0 then
+                    ret ()
+                else
+                    smPush b >>>=
+                    smPush a >>>=
+                    smCCW
+    let rec iterRemoveSumEven =
+        function
+        | 0u -> ret ()
+        | x -> ringStep >>>= iterRemoveSumEven (x-1u)
