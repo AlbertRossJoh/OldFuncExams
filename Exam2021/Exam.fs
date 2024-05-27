@@ -1,4 +1,7 @@
 ﻿module Exam2021
+
+    open System
+
 (* If you are importing this into F# interactive then comment out
    the line above and remove the comment for the line bellow.
 
@@ -321,22 +324,49 @@
 
 (* Question 4.1 *)
 
-    type 'a ring = RemoveThisConstructor of 'a (* replace this entire type with your own *)
+    type 'a ring = 'a list*'a list (* replace this entire type with your own *)
 
 (* Question 4.2 *)
 
-    let length _ = failwith "not implemented"
-    let ringFromList _ = failwith "not implemented"
-    let ringToList _ = failwith "not implemented"
+    let length (ring: 'a ring) =
+        // ((0, Guid.Empty),ring) ||> Seq.fold (fun (ctr, chosenId) (item, ident) ->
+        //     if chosenId = Guid.Empty then
+        //         (0, ident)
+        //     else if chosenId <> ident then (ctr+1, chosenId)
+        //     else (ctr, ident)) |> fst
+        
+        List.length (fst ring) + List.length (snd ring)
+    let ringFromList lst : 'a ring=
+        ([], lst)
+    let ringToList (ring: 'a ring) =
+          snd ring@(ring |> fst |> List.rev)
 
 (* Question 4.3 *)
 
-    let empty _ = failwith "not implemented"
-    let push _ = failwith "not implemented"
-    let peek _ = failwith "not implemented"
-    let pop _ = failwith "not implemented"
-    let cw _ = failwith "not implemented"
-    let ccw _ = failwith "not implemented"
+    let empty : 'a ring = ([],[])
+    let push item (r: 'a ring) : 'a ring = 
+        (fst r, item::(snd r))
+    let peek (r: 'a ring) =
+        List.tryHead (snd r)
+    let pop (r: 'a ring) =
+        match r with
+        | [],[] -> None
+        | [], _::xs-> Some([],xs)
+        | _::xs, []-> Some(xs,[])
+        | _ -> failwith "todo"
+    let cw (r:'a ring) =
+        match r with
+        | a, x::xs -> x::a,xs
+        | x::xs, a -> xs,x::a
+        | a -> a
+    let revTuple (a,b) =
+        (a |> List.rev, b |> List.rev)
+    let ccw (r:'a ring) =
+        match r with
+        | [], xs ->
+            let tmp = List.rev xs
+            (List.tail tmp, [List.head tmp])
+        | y::ys, xs -> (ys,y::xs)
 
 (* Question 4.4 *)
 

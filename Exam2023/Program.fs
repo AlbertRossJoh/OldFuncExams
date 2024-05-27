@@ -69,6 +69,6 @@ let m2 =  assign (emptyMem 5) 2 42
 // printfn "%A" (evalProg2 (fibProg 10) |> evalSM m |> Option.map snd)
 // printfn "%A" (evalProg2 (fibProg 10) >>>= lookup2 2 |> evalSM m |> Option.map fst)
 
-printfn "%A" ("5+4" |> run parseExpr)
+// printfn "%A" ("5+4" |> run parseExpr)
 // printfn "%A" ("[4+[3]]" |> run parseExpr)
 // printfn "%A" ("[5 + 4]" |> run parseExpr)

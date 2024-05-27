@@ -42,13 +42,22 @@ let testQ3() =
     printfn "%A" ("1" |> elFromString |> elSeq2 |> Seq.item 4)
     ()
 
-let testQ4 =
+let testQ4() =
     // place debug prints for Q4 here
+    // printfn "%A" (ringToList (ringFromList [1;2;3;4;5]))
+    // printfn "%A" (length (ringFromList [1;2;3;4;5]))
+    // printfn "%A" (ringToList (ringFromList [1;2;3;4;5]))
+    // printfn "%A" (ringToList (empty : int ring))
+    // printfn "%A" ([1;2;3;4;5] |> ringFromList |> push 6 |> ringToList)
+    // printfn "%A" ([1;2;3;4;5] |> ringFromList |> peek)
+    printfn "%A" ([1;2;3;4;5] |> ringFromList |> ccw |> ccw |> ringToList)
+    printfn "%A" ([1;2;3;4;5] |> ringFromList |> cw |> cw |> ringToList)
     ()
 
 [<EntryPoint>]
 let main argv =
     // testQ1 ()
     // testQ2 ()
-    testQ3 ()
+    // testQ3 ()
+    testQ4()
     0 // return an integer exit code

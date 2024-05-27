@@ -74,11 +74,10 @@ module CollatzConjecture
         
         
     let parallelMaxCollatz x y n =
-        let arr = [|x..y|] |> Array.splitInto n 
-        Array.Parallel.map (fun arr ->
-            let x = Array.head arr - 1 // Not inclusive
-            let y = arr[Array.length arr - 1]
-            maxCollatz x y) arr
+        [x..(y-x)/n..y]
+        |> Seq.pairwise
+        |> Seq.toArray
+        |> Array.Parallel.map (fun (curr, next) -> maxCollatz curr next)
         |> Array.maxBy snd
         |> fst
             
