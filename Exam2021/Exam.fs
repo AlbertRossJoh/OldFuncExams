@@ -1,6 +1,5 @@
 ﻿module Exam2021
 
-    open System
 
 (* If you are importing this into F# interactive then comment out
    the line above and remove the comment for the line bellow.
