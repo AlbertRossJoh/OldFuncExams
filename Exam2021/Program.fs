@@ -32,13 +32,14 @@ let testQ2() =
 
 let testQ3() =
     // place debug prints for Q3 here
-    printfn "%A" (elToString [1;1;1;3;2;2;1])
-    printfn "%A" (elFromString "1113221")
-    printfn "%A" (elFromString "1113221" |> elToString)
-    printfn "%A" (elFromString "1113221" |> nextElement)
-    printfn "%A" (elFromString "1" |> nextElement |> nextElement)
-    printfn "%A" ("1" |> elFromString |> nextElement |> nextElement |>
-         nextElement |> nextElement |> nextElement |> elToString)
+    // printfn "%A" (elToString [1;1;1;3;2;2;1])
+    // printfn "%A" (elFromString "1113221")
+    // printfn "%A" (elFromString "1113221" |> elToString)
+    // printfn "%A" (elFromString "1113221" |> nextElement)
+    // printfn "%A" (elFromString "1" |> nextElement |> nextElement)
+    // printfn "%A" ("1" |> elFromString |> nextElement |> nextElement |>
+    //      nextElement |> nextElement |> nextElement |> elToString)
+    printfn "%A" ("1" |> elFromString |> elSeq2 |> Seq.item 4)
     ()
 
 let testQ4 =

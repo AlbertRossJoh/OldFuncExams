@@ -289,15 +289,22 @@
 
 (* Question 3.4 *)
 
-    let elSeq _ = failwith "not implemented"
-    let elSeq2 _ = failwith "not implemented"
+    let elSeq (elm: element) : element seq =
+        Seq.unfold (fun state ->
+            let next = nextElement state
+            Some(next, next)) elm
+    let rec elSeq2 (elm: element) : element seq =
+        seq {
+            yield elm
+            yield! elSeq2 (nextElement elm)
+        }
 
     (*
 
     Q: Why would Seq.initInfinite not be an appropriate choice to
        write a function like elSeq?
 
-    A: <Your answer goes here>
+    A:  The function initInfinite uses an index parameter which is not useful in our usecase
 
     *)
 
