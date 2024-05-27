@@ -50,8 +50,15 @@ let testQ4() =
     // printfn "%A" (ringToList (empty : int ring))
     // printfn "%A" ([1;2;3;4;5] |> ringFromList |> push 6 |> ringToList)
     // printfn "%A" ([1;2;3;4;5] |> ringFromList |> peek)
-    printfn "%A" ([1;2;3;4;5] |> ringFromList |> ccw |> ccw |> ringToList)
+    // printfn "%A" ([1;2;3;4;5] |> ringFromList |> ccw |> ccw |> ringToList)
     printfn "%A" ([1;2;3;4;5] |> ringFromList |> cw |> cw |> ringToList)
+    printfn "%A" ([1;2;3;4;5] |> ringFromList |> evalSM smLength |> Option.get |> fst)
+    printfn "%A" ([1;2;3;4;5] |> ringFromList |> evalSM (smPush 6) |> Option.get |> snd |> ringToList)
+    printfn "%A" ([1;2;3;4;5] |> ringFromList |> evalSM smPop |> Option.get |> snd |> ringToList)
+    printfn "%A" (([]: int list) |> ringFromList |> evalSM smPop)
+    printfn "%A" ([1;2;3;4;5] |> ringFromList |> evalSM (smCW >>>= smCW) |> Option.get |> snd |> ringToList)
+    printfn "%A" ([1;2;3;4;5] |> ringFromList |> evalSM (smCCW >>>= smCCW) |> Option.get |> snd |> ringToList)
+    printfn "%A" ([1;2;3;4;5] |> ringFromList |> evalSM (smCW >>>= smCCW) |> Option.get |> snd |> ringToList)
     ()
 
 [<EntryPoint>]

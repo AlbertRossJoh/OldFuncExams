@@ -356,17 +356,15 @@
         | _ -> failwith "todo"
     let cw (r:'a ring) =
         match r with
-        | a, x::xs -> x::a,xs
-        | x::xs, a -> xs,x::a
-        | a -> a
-    let revTuple (a,b) =
-        (a |> List.rev, b |> List.rev)
-    let ccw (r:'a ring) =
-        match r with
         | [], xs ->
             let tmp = List.rev xs
             (List.tail tmp, [List.head tmp])
         | y::ys, xs -> (ys,y::xs)
+    let ccw (r:'a ring) =
+            match r with
+            | a, x::xs -> x::a,xs
+            | x::xs, a -> xs,x::a
+            | a -> a
 
 (* Question 4.4 *)
 
@@ -384,11 +382,21 @@
     let (>>>=) m n = m >>= (fun () -> n)
     let evalSM (SM f) s = f s
 
-    let smLength _ = failwith "not implemented"
-    let smPush _ = failwith "not implemented"
-    let smPop _ = failwith "not implemented"
-    let smCW _ = failwith "not implemented"
-    let smCCW _ = failwith "not implemented"
+    let smLength =
+        SM(fun ring -> Some(length ring, ring))
+    let smPush item =
+        SM(fun ring -> Some((), push item ring))
+    let smPop =
+        SM(fun ring ->
+            ring
+            |> peek
+            |> Option.bind (fun item ->
+                let next: 'b ring = pop ring |> Option.get
+                Some(item, next)))
+    let smCW =
+        SM(fun ring -> Some((), cw ring))
+    let smCCW =
+        SM(fun ring -> Some((), ccw ring))
 
 (* Question 4.4 *)
 
