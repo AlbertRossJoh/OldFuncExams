@@ -36,11 +36,26 @@ let testQ1 () =
 let testQ2 () =
     printfn "Testing Question 2"
     // place debug prints for Q2 here
+    printfn "%A" (barTail ([10; 4; 3; 5; 0; 2] |> List.rev))
     ()
 
 let testQ3 () =
     printfn "Testing Question 3"
-    // place debug prints for Q3 here
+    // printfn "%A" (approxSquare 5 0)
+    // printfn "%A" (approxSquare 5 1)
+    // printfn "%A" (approxSquare 5 2)
+    // printfn "%A" (approxSquare 5 3)
+    // printfn "%A" (approxSquare 5 4)
+    // printfn "%A" (quadratic 5 -4 -1 1)
+    // printfn "%A" (quadratic 5 -3 -1 1)
+    // printfn "%A" (quadratic 5 -3 -1 2)
+    // printfn "%A" (quadratic 5 -3 -1 3)
+    // printfn "%A" ([1..10] |> List.map (fun x -> (x, -(x + 1), -(x + 2))) |> fun eqs -> parQuadratic eqs 3 5)
+    printfn "%A" (solveQuadratic "-4x^2 - 5x + 6 = 0" 5)
+    printfn "%A" (solveQuadratic "-4x^2    -  5x+ 6=    0" 5)
+    printfn "%A" (solveQuadratic "-4x^2-5x+6=0" 5)
+    printfn "%A" (solveQuadratic "-4x^3 - 5x + 6 = 0" 5)
+    printfn "%A" (solveQuadratic "-4x^2 - 5x + 6 = 0 Hello World" 5)
     ()
 
 let testQ4 () =
@@ -50,5 +65,7 @@ let testQ4 () =
 
 [<EntryPoint>]
 let main argv =
-    testQ1 ()
+    // testQ1 ()
+    // testQ2 ()
+    testQ3 ()
     0 // return an integer exit code

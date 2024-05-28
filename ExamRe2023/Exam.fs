@@ -441,13 +441,9 @@
         let rec inner st =
             match getCurrentStmnt bp st with
             | If(e, l) ->
-                let stm = evalExpr e st <> 0
-                let ret = 
-                    if stm then
-                        goto l st
-                    else
-                        st |> step bp
-                inner ret
+                match evalExpr e st with
+                | 0 -> goto l st |> inner
+                | _ -> step bp st |> inner
             | Let(v, e) ->
                 let e = evalExpr e st
                 update v e st |> goto (nextLine (getLineNumber st) bp) |> inner

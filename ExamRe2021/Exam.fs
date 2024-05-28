@@ -1,4 +1,8 @@
 ﻿module Exam2021_2
+
+    open System
+    open Microsoft.FSharp.Core
+
 (* If you are importing this into F# interactive then comment out
    the line above and remove the comment for the line bellow.
 
@@ -116,23 +120,25 @@
     
     Q: What are the types of functions foo and bar?
 
-    A: <Your answer goes here>
+    A:  foo: 'a list -> 'a list -> 'a list
+        bar: 'a list -> 'a list
 
 
     Q: What does the function bar do.
        Focus on what it does rather than how it does it.
 
-    A: <Your answer goes here>
+    A: bar sorts a list
     
     Q: What would be appropriate names for functions 
        foo and bar?
 
-    A: <Your answer goes here>
+    A:  bar -> mergeSort
+        foo -> merge
     
     Q: What would be appropriate names of the values a and b in bar.
     
     
-    A: <Your answer goes here>
+    A:  fstPartLst sndPartLst
     
     *)
         
@@ -147,7 +153,7 @@
     Q: What function does this keyword serve in general
        (why would you use "and" when writing any program)?
 
-    A: <Your answer goes here>
+    A: it is for mutual recursion foo needs to call bar and bar foo, this means that they cannot be defined sequentially
 
 
     Q: What would happen if you removed it from this particular program and
@@ -155,13 +161,17 @@
        (change the line "and bar = " to "let rec bar = ")?
        Explain why the program either does or does not work.
 
-    A: <Your answer goes here>
+    A: it would not work
 
     *)
 
 (* Question 2.3 *) 
-    let foo2 _ = failwith "not implemented"
     
+    // let foo2 xs ys =
+    //     List.unfold (fun acc ->
+    //         match acc with
+    //         | [], [] -> None
+    //         | x::xs, [] -> Some((xs, []), x::xs)) (xs, ys)
     (* use the following code as a starting template
     let foo2 xs ys = List.unfold <a function goes here> (xs, ys)
     *)
@@ -177,34 +187,116 @@
        Keep in mind that all steps in an evaluation chain must evaluate to the same value
        ((5 + 4) * 3 --> 9 * 3 --> 27, for instance).
 
-    A: <Your answer goes here>
+    A: the last function call is not to the function itself, in foos case the last call will be an cons operation since the branches go into x::foo
 
     *)
 (* Question 2.5 *)
 
-    let fooTail _ = failwith "not implemented"
+    let fooTail xs ys =
+        let rec inner xs ys acc =
+            match xs, ys with
+            | [], ys -> ys@acc
+            | xs, [] -> xs@acc
+            | x :: xs, y :: ys ->
+              if x < y then
+                  inner xs (y::ys) (x::acc)
+              else
+                  inner (x::xs) ys (y::acc)
+        inner xs ys [] |> List.rev
+              
+        
 
 (* Question 2.5 *)
 
-    let barTail _ = failwith "not implemented"
+    let barTail lst =
+        let rec inner cont =
+            function
+            | [] -> cont []
+            | [x] -> cont [x]
+            | xs ->
+                let a, b = List.splitAt (List.length xs / 2) xs
+                inner (fun next -> inner (fooTail next) b |> cont ) a 
+        inner id lst
 
 (* 3: Approximating square roots *)
 
+    let perfectSquaresSeq =
+        Seq.initInfinite (fun i -> i*i)
+    
 (* Question 3.1 *)
 
-    let approxSquare _ = failwith "not implemented"
+    let approxSquare (x: int) =
+        let closest = List.unfold (fun state ->
+            if state > x then None
+            else Some(state, state*state)) 2 |> List.tryLast 
+        let closest =
+            match x with
+            | x when x < 0 -> failwith "This function cannot handle a negative square root"
+            | x when x > 1 -> closest |> Option.get
+            | x -> x
+        let rec inner (v: float) i =
+            if i <= 0 then
+                v
+            else
+                inner ((((float x)/v)+v)/2.) (i-1)
+        inner (Math.Sqrt (float closest))
 
 (* Question 3.2 *)
 
-    let quadratic _ = failwith "not implemented"
+    let quadratic a b c num =
+        let solve f =
+            let square = (approxSquare (b*b-(4*a*c)) num)
+            (f (-b |> float) square)/(2*a |> float)
+        (solve (+), solve (-))
 
 (* Question 3.3 *)
 
-    let parQuadratic _ = failwith "not implemented"
+    let parQuadratic eqs numProcesses num =
+        eqs
+        |> Seq.splitInto numProcesses
+        |> Seq.toArray
+        |> Array.Parallel.map (Array.map (fun (a, b, c) -> quadratic a b c num) >> Array.toList)
+        |> Array.fold (fun acc calc -> acc@calc) []
 
 (* Question 3.4 *)
-
-    let solveQuadratic _ = failwith "not implemented"
+    open JParsec.TextParser
+   
+    let curry f = fun (a, b) -> f a b
+    let parenthesise p = pchar '[' >>. p .>> pchar ']'
+    let whitespaceChar = satisfy Char.IsWhiteSpace 
+    let spaces = many whitespaceChar
+    
+    let (.>*>.) p1 p2 = p1 .>> spaces .>>. p2
+    let (.>*>) p1 p2 = p1 .>> spaces .>> p2 
+    let (>*>.) p1 p2 = p1 .>> spaces >>. p2
+    let binop2 pOp p1 p2 = p1 .>*> pOp .>*>. p2
+    let ParseExpr, eref = createParserForwardedToRef()
+    let ParseOperation, aref = createParserForwardedToRef<(int -> int)>()
+    
+    let negate x =
+        -x
+    
+    let parseExpr =
+        pint32 .>>
+        pstring "x^2" .>*>.
+        ParseOperation .>*>.
+        pint32 .>>
+        pchar 'x' .>*>.
+        ParseOperation .>*>.
+        pint32 .>*>
+        pchar '=' .>*>
+        pchar '0'
+        |>> (fun ((((a,prefixb),b),prefixc),c) -> quadratic a (prefixb b) (prefixc c))
+        
+    let parseOperation =
+        choice [
+            pchar '-' |>> (fun _ -> fun x -> -x)
+            pchar '+' |>> (fun _ -> fun x -> +x)
+        ]
+    do eref := parseExpr
+    do aref := parseOperation
+    let solveQuadratic str =
+        run parseExpr str  |> getSuccess
 
 (* 4: Rational numbers *)
 
