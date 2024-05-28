@@ -428,6 +428,23 @@
                     smPush b >>>=
                     smPush a >>>=
                     smCCW
+    
+    let ringStepComp =
+        state {
+            let! len = smLength
+            if len < 2 then
+                ()
+            else
+                let! a = smPop
+                let! b = smPop
+                if (a+b)%2 = 0 then
+                    ()
+                else
+                    do! smPush b
+                    do! smPush a
+                    return! smCCW
+        }
+        
     let rec iterRemoveSumEven =
         function
         | 0u -> ret ()

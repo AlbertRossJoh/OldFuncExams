@@ -327,7 +327,25 @@
                 pop >>= fun b ->
                 push (op a b) >>>=
                 runStackProg2 xs
-            
+    let rec runStackProg2CE sp =
+        state{
+            match sp with
+            | [] -> return! pop
+            | x::xs ->
+                match x with
+                | Push v ->
+                    do! push v
+                    return! runStackProg2CE xs
+                | Add | Mult ->
+                    let op = if x = Add then (+) else (*)
+                    let! a = pop
+                    let! b = pop
+                    do! push (op a b)
+                    return! runStackProg2CE xs
+        }
+                    
+                
+                
     
 (* Question 4.5 *)
     

@@ -384,6 +384,13 @@
     let state = new StateBuilder()
 
     let rec calculate (lst: (rat*(rat-> SM<unit>)) list) =
-        match lst with
-        | [] -> ret ()
-        | (rat, f)::xs -> f rat >>>= calculate xs
+        state{
+            match lst with
+            | [] -> ()
+            | (rat, f)::xs ->
+                do! f rat
+                return! calculate xs
+        }
+        // match lst with
+        // | [] -> ret ()
+        // | (rat, f)::xs -> f rat >>>= calculate xs
