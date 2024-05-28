@@ -302,19 +302,44 @@
 
 (* Question 4.1 *)
 
-    type rat = unit (* replace this entire type with your own *)
+    type rat = int*int (* replace this entire type with your own *)
 
 (* Question 4.2 *)
 
-    let mkRat _ = failwith "not implemented"
-    let ratToString _ = failwith "not implemented"
+    let gcd a b =
+        let rec inner i =
+            if a % i = 0 && b % i = 0 then
+                i
+            else
+                inner (i-1)
+        let a = Math.Abs(a)
+        let b = Math.Abs(b)
+        inner (Math.Max(a, b))
+    let mkRat n d : rat option =
+        if d = 0 then
+            None
+        else
+            if (n < 0 && d < 0) || d < 0 then
+                let n = -n
+                let d = -d
+                let gcd = gcd n d
+                Some(n/gcd, d/gcd)
+            else 
+                let gcd = gcd n d
+                Some(n/gcd, d/gcd)
+    let ratToString ((n, d):rat) =
+        $"%i{n} / %i{d}"
 
 (* Question 4.3 *)
 
-    let plus _ = failwith "not implemented"
-    let minus _ = failwith "not implemented"
-    let mult _ = failwith "not implemented"
-    let div _ = failwith "not implemented"
+    let plus ((a,b):rat) ((c,d):rat) =
+        mkRat (a*d+b*c) (b*d)
+    let minus ((a,b):rat) ((c,d):rat) =
+        mkRat (a*d-b*c) (b*d)
+    let mult ((a,b):rat) ((c,d):rat) =
+        mkRat (a*c) (b*d)
+    let div ((a,b):rat) ((c,d):rat) =
+        mkRat (a*d) (b*c)
 
 (* Question 4.4 *)
 
@@ -330,12 +355,18 @@
         
     let (>>=) m f = bind m f
     let (>>>=) m n = m >>= (fun () -> n)
-    let evalSM (SM f) s = f s 
+    let evalSM (SM f) s = f s
+    let innerRet a =
+        a |> Option.map (fun a -> (), a)
 
-    let smPlus _ = failwith "not implemented"
-    let smMinus _ = failwith "not implemented"
-    let smMult _ = failwith "not implemented"
-    let smDiv _ = failwith "not implemented"
+    let smPlus rat =
+        SM(fun stRat -> plus rat stRat |> innerRet)
+    let smMinus rat =
+        SM(fun stRat -> minus stRat rat |> innerRet)
+    let smMult rat =
+        SM(fun stRat -> mult stRat rat |> innerRet)
+    let smDiv rat =
+        SM(fun stRat -> div stRat rat |> innerRet)
 
 (* Question 4.5 *)
 
@@ -352,4 +383,7 @@
 
     let state = new StateBuilder()
 
-    let calculate _ = failwith "not implemented"
+    let rec calculate (lst: (rat*(rat-> SM<unit>)) list) =
+        match lst with
+        | [] -> ret ()
+        | (rat, f)::xs -> f rat >>>= calculate xs
