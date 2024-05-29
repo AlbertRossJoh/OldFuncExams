@@ -37,6 +37,7 @@ let testQ2 () =
     printfn "Testing Question 2"
     // place debug prints for Q2 here
     printfn "%A" (barTail ([10; 4; 3; 5; 0; 2] |> List.rev))
+    printfn "%A" (bar ([10; 4; 3; 5; 0; 2] |> List.rev))
     ()
 
 let testQ3 () =
@@ -89,7 +90,7 @@ let testQ4 () =
 [<EntryPoint>]
 let main argv =
     // testQ1 ()
-    // testQ2 ()
+    testQ2 ()
     // testQ3 ()
-    testQ4 ()
+    // testQ4 ()
     0 // return an integer exit code

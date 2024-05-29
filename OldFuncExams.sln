@@ -12,6 +12,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Exam2021", "Exam2021\Exam20
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ExamRe2021", "ExamRe2021\ExamRe2021.fsproj", "{44F510BE-8F97-4CFB-B4FF-2EB9CC26382E}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Exam2024", "Exam2024\Exam2024.fsproj", "{54854B2C-3754-420F-90C7-ED8FA63000C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{44F510BE-8F97-4CFB-B4FF-2EB9CC26382E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44F510BE-8F97-4CFB-B4FF-2EB9CC26382E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44F510BE-8F97-4CFB-B4FF-2EB9CC26382E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54854B2C-3754-420F-90C7-ED8FA63000C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54854B2C-3754-420F-90C7-ED8FA63000C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54854B2C-3754-420F-90C7-ED8FA63000C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54854B2C-3754-420F-90C7-ED8FA63000C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
